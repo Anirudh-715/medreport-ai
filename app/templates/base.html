@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}MedReport — Clinical Diagnostic AI{% endblock %}</title>
+    <title>{% block title %}MedReport AI — Clinical Diagnostic Analyzer{% endblock %}</title>
 
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,50 +11,62 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-    <!-- Plus Jakarta Sans Font (Modern Medical Editorial) -->
+    <!-- Plus Jakarta Sans Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Custom Clinic CSS -->
+    <!-- Custom Tool CSS -->
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 
     {% block head %}{% endblock %}
 </head>
 <body>
-    <!-- Clinic Navbar -->
-    <header class="clinic-header sticky-top">
-        <nav class="navbar navbar-expand-lg py-3">
+    <!-- Top Tool Header -->
+    <header class="tool-navbar sticky-top">
+        <nav class="navbar navbar-expand-lg py-2.5">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href="/">
-                    <span class="brand-text">Med<span class="brand-accent">Report</span></span>
-                    <span class="brand-dot"></span>
+                <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                    <div class="brand-icon-box">
+                        <i class="bi bi-heart-pulse-fill"></i>
+                    </div>
+                    <div>
+                        <span class="brand-name">MedReport<span class="brand-ai">AI</span></span>
+                        <span class="brand-tag">CLINICAL TOOL</span>
+                    </div>
                 </a>
                 
                 <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#clinicNavbar" aria-controls="clinicNavbar" aria-expanded="false"
+                        data-bs-target="#toolNav" aria-controls="toolNav" aria-expanded="false"
                         aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="clinicNavbar">
+                <div class="collapse navbar-collapse" id="toolNav">
                     <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" href="/">Home</a>
+                            <a class="nav-link {{ 'active' if request.path == '/' }}" href="/">
+                                <i class="bi bi-cpu me-1"></i> Analysis Workspace
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#how-it-works">How It Works</a>
+                            <a class="nav-link {{ 'active' if request.path == '/history' }}" href="/history">
+                                <i class="bi bi-clock-history me-1"></i> Report History
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#panels">Diagnostic Panels</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/history">Report History</a>
+                            <button type="button" class="nav-link btn btn-link text-decoration-none" data-bs-toggle="modal" data-bs-target="#howItWorksModal">
+                                <i class="bi bi-question-circle me-1"></i> How It Works
+                            </button>
                         </li>
                     </ul>
-                    <div class="d-flex align-items-center gap-3">
-                        <a href="/history" class="btn btn-nav-cta">
-                            <i class="bi bi-clock-history me-1"></i> Patient History
+
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="/sample-demo" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
+                            <i class="bi bi-play-circle-fill me-1"></i> Try Sample Demo
+                        </a>
+                        <a href="/" class="btn btn-primary btn-sm rounded-pill px-3 fw-semibold">
+                            <i class="bi bi-cloud-arrow-up-fill me-1"></i> Upload
                         </a>
                     </div>
                 </div>
@@ -62,13 +74,12 @@
         </nav>
     </header>
 
-    <!-- Flash Notifications -->
+    <!-- Flash Messages Container -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="container mt-3">
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show flash-alert shadow-sm"
-                         role="alert">
+                    <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show flash-alert shadow-sm" role="alert">
                         <i class="bi bi-info-circle-fill me-2"></i>
                         {{ message }}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -78,37 +89,90 @@
         {% endif %}
     {% endwith %}
 
-    <!-- Main Content -->
-    <main>
+    <!-- Main Tool Content -->
+    <main class="py-4">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Clinic Footer -->
-    <footer class="clinic-footer py-5 mt-5">
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                <div class="col-md-6 text-center text-md-start">
-                    <span class="brand-text text-white">Med<span class="brand-accent">Report</span></span>
-                    <p class="text-muted small mt-2 mb-0">
-                        Cloud-native clinical decision support system powered by Microsoft Azure Cloud.
-                    </p>
+    <!-- How It Works Modal (Works globally across all pages!) -->
+    <div class="modal fade" id="howItWorksModal" tabindex="-1" aria-labelledby="howItWorksModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
+                    <div>
+                        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1.5 rounded-pill small fw-semibold">
+                            <i class="bi bi-layers-fill me-1"></i> Architecture Pipeline
+                        </span>
+                        <h4 class="modal-title fw-bold text-dark mt-2" id="howItWorksModalLabel">
+                            How MedReport AI Evaluates Reports
+                        </h4>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <p class="text-white-50 small mb-1">
-                        Microsoft Certified: Azure AI Fundamentals (AI-901) Project
-                    </p>
-                    <p class="text-white small mb-0 fw-semibold">
-                        Developed by Anirudh Varshney | JUIT
-                    </p>
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="modal-step-card p-3 rounded-3 h-100 border">
+                                <div class="step-num text-primary fw-bold fs-4 mb-2">01</div>
+                                <h6 class="fw-bold text-dark">Secure Cloud Storage</h6>
+                                <p class="text-muted small mb-0">
+                                    Files are partitioned into Microsoft Azure Blob Storage with GUID-based ephemeral keys for privacy.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="modal-step-card p-3 rounded-3 h-100 border">
+                                <div class="step-num text-primary fw-bold fs-4 mb-2">02</div>
+                                <h6 class="fw-bold text-dark">Layout & Table OCR</h6>
+                                <p class="text-muted small mb-0">
+                                    Azure Document Intelligence (`prebuilt-layout`) extracts text, tabular structures, and test values.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="modal-step-card p-3 rounded-3 h-100 border">
+                                <div class="step-num text-primary fw-bold fs-4 mb-2">03</div>
+                                <h6 class="fw-bold text-dark">Clinical Reference Engine</h6>
+                                <p class="text-muted small mb-0">
+                                    Cross-references patient numbers against standardized reference intervals (CBC, HbA1c, TSH, Lipids).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-3 bg-light rounded-3 border">
+                        <h6 class="fw-bold text-dark mb-1">
+                            <i class="bi bi-shield-check text-success me-1"></i> Zero-Hallucination Medical Guardrails
+                        </h6>
+                        <p class="text-muted small mb-0">
+                            Unlike generic chat LLMs that can guess medical figures, MedReport AI enforces boundary checking on actual clinical values to guarantee 100% diagnostic precision.
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+                    <a href="/sample-demo" class="btn btn-primary rounded-pill px-4">Test Demo Report</a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Clean Tool Footer -->
+    <footer class="tool-footer py-4 mt-auto border-top">
+        <div class="container text-center">
+            <p class="mb-1 text-muted small">
+                <strong>MedReport AI</strong> — Cloud-Native Medical Report Analyzer &bull; Azure AI Fundamentals (AI-901) Project
+            </p>
+            <p class="mb-0 text-muted small opacity-75">
+                Developed by <strong>Anirudh Varshney</strong> (Roll No: 241030149) &bull; Jaypee University of Information Technology (JUIT)
+            </p>
         </div>
     </footer>
 
     <!-- Bootstrap 5.3 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom App JS -->
+    <!-- Custom Tool JS -->
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
     {% block scripts %}{% endblock %}

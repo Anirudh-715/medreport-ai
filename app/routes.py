@@ -28,6 +28,49 @@ def index():
     return render_template("index.html", missing_services=missing)
 
 
+@main_bp.route("/sample-demo")
+def sample_demo():
+    """1-Click demo that analyzes the included sample patient pathology report."""
+    base_dir = os.path.abspath(os.path.dirname(__file__))
+    sample_path = os.path.join(base_dir, "sample_data", "sample_report.pdf")
+    
+    if not os.path.exists(sample_path):
+        flash("Sample report file not found on server.", "warning")
+        return redirect(url_for("main.index"))
+
+    with open(sample_path, "rb") as f:
+        file_bytes = f.read()
+
+    filename = "Sample-Clinical-Report.pdf"
+    report = Report(filename=filename, status="processing")
+    db.session.add(report)
+    db.session.commit()
+
+    try:
+        from app.services.report_analyzer import ReportAnalyzerService
+        analyzer = ReportAnalyzerService()
+        results = analyzer.analyze(file_bytes, filename)
+
+        report.extracted_text = results.get("extracted_text", "")
+        report.summary = results.get("summary", "")
+        report.key_findings = json.dumps(results.get("key_findings", []))
+        report.abnormal_values = json.dumps(results.get("abnormal_values", []))
+        report.recommendations = json.dumps(results.get("recommendations", []))
+        report.severity = results.get("severity", "Normal")
+        report.blob_url = results.get("blob_url", "")
+        report.status = "completed"
+        db.session.commit()
+
+        flash("Demo sample report analyzed successfully!", "success")
+        return redirect(url_for("main.result", report_id=report.id))
+    except Exception as e:
+        report.status = "failed"
+        report.error_message = str(e)
+        db.session.commit()
+        flash(f"Analysis failed: {str(e)}", "danger")
+        return redirect(url_for("main.index"))
+
+
 @main_bp.route("/upload", methods=["POST"])
 def upload():
     """Handle file upload and trigger the analysis pipeline."""
