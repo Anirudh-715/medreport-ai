@@ -5,8 +5,10 @@ services:
     region: singapore
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn wsgi:app
+    startCommand: gunicorn --bind 0.0.0.0:$PORT wsgi:app
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.10.12
       - key: FLASK_SECRET_KEY
         generateValue: true
       - key: AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT

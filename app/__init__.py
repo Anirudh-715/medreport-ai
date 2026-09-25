@@ -24,9 +24,12 @@ def create_app():
 
     # Database configuration
     base_dir = os.path.abspath(os.path.dirname(__file__))
-    db_path = os.path.join(os.path.dirname(base_dir), "instance", "reports.db")
-    os.makedirs(os.path.dirname(db_path), exist_ok=True)
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{db_path}"
+    instance_dir = os.path.join(os.path.dirname(base_dir), "instance")
+    os.makedirs(instance_dir, exist_ok=True)
+    db_file = os.path.join(instance_dir, "reports.db")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+        "DATABASE_URL", f"sqlite:///{db_file}"
+    )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     # Upload folder
