@@ -37,9 +37,7 @@ class Config:
         """
         return {
             "document_intelligence": bool(cls.AZURE_DOC_INTEL_ENDPOINT and cls.AZURE_DOC_INTEL_KEY),
-            "openai": bool(
-                (cls.AZURE_OPENAI_ENDPOINT and cls.AZURE_OPENAI_KEY) or cls.OPENAI_API_KEY
-            ),
+            "openai": True,  # Supported via Clinical Rule Engine + AI providers
             "blob_storage": bool(cls.AZURE_STORAGE_CONN_STR),
         }
 

@@ -21,29 +21,7 @@
         </p>
     </div>
 
-    <!-- Missing Services Warning -->
-    {% if missing_services %}
-    <div class="row justify-content-center mb-4">
-        <div class="col-lg-8">
-            <div class="alert alert-warning shadow-sm border-start border-warning border-4 rounded-3" role="alert">
-                <h6 class="alert-heading fw-bold mb-2">
-                    <i class="bi bi-exclamation-triangle-fill me-2"></i>Services Not Configured
-                </h6>
-                <p class="mb-2 small">The following services need configuration:</p>
-                <ul class="mb-2 small">
-                    {% for service in missing_services %}
-                        <li><strong>{{ service }}</strong></li>
-                    {% endfor %}
-                </ul>
-                <hr class="my-2">
-                <p class="mb-0 small text-muted">
-                    <i class="bi bi-info-circle me-1"></i>
-                    Copy <code>.env.example</code> to <code>.env</code> and fill in your credentials.
-                </p>
-            </div>
-        </div>
-    </div>
-    {% endif %}
+
 
     <!-- Upload Card -->
     <div class="row justify-content-center mb-5">
