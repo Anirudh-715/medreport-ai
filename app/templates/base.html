@@ -62,11 +62,8 @@
                     </ul>
 
                     <div class="d-flex align-items-center gap-2">
-                        <a href="/sample-demo" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold">
-                            <i class="bi bi-play-circle-fill me-1"></i> Try Sample Demo
-                        </a>
                         <a href="/" class="btn btn-primary btn-sm rounded-pill px-3 fw-semibold">
-                            <i class="bi bi-cloud-arrow-up-fill me-1"></i> Upload
+                            <i class="bi bi-cloud-arrow-up-fill me-1"></i> Upload Report
                         </a>
                     </div>
                 </div>
@@ -94,14 +91,14 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- How It Works Modal (Works globally across all pages!) -->
+    <!-- How It Works Modal (Clean & Honest) -->
     <div class="modal fade" id="howItWorksModal" tabindex="-1" aria-labelledby="howItWorksModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content border-0 rounded-4 shadow-lg">
                 <div class="modal-header border-bottom-0 pb-0 pt-4 px-4">
                     <div>
                         <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1.5 rounded-pill small fw-semibold">
-                            <i class="bi bi-layers-fill me-1"></i> Architecture Pipeline
+                            <i class="bi bi-layers-fill me-1"></i> System Architecture
                         </span>
                         <h4 class="modal-title fw-bold text-dark mt-2" id="howItWorksModalLabel">
                             How MedReport AI Evaluates Reports
@@ -114,27 +111,27 @@
                         <div class="col-md-4">
                             <div class="modal-step-card p-3 rounded-3 h-100 border">
                                 <div class="step-num text-primary fw-bold fs-4 mb-2">01</div>
-                                <h6 class="fw-bold text-dark">Secure Cloud Storage</h6>
+                                <h6 class="fw-bold text-dark">Document Ingestion</h6>
                                 <p class="text-muted small mb-0">
-                                    Files are partitioned into Microsoft Azure Blob Storage with GUID-based ephemeral keys for privacy.
+                                    Files are securely uploaded and stored in Microsoft Azure Blob Storage with unique identifiers.
                                 </p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="modal-step-card p-3 rounded-3 h-100 border">
                                 <div class="step-num text-primary fw-bold fs-4 mb-2">02</div>
-                                <h6 class="fw-bold text-dark">Layout & Table OCR</h6>
+                                <h6 class="fw-bold text-dark">Text &amp; Layout OCR</h6>
                                 <p class="text-muted small mb-0">
-                                    Azure Document Intelligence (`prebuilt-layout`) extracts text, tabular structures, and test values.
+                                    Azure Document Intelligence extracts text, tables, and numeric lab readings from uploaded files.
                                 </p>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="modal-step-card p-3 rounded-3 h-100 border">
                                 <div class="step-num text-primary fw-bold fs-4 mb-2">03</div>
-                                <h6 class="fw-bold text-dark">Clinical Reference Engine</h6>
+                                <h6 class="fw-bold text-dark">Reference Comparison</h6>
                                 <p class="text-muted small mb-0">
-                                    Cross-references patient numbers against standardized reference intervals (CBC, HbA1c, TSH, Lipids).
+                                    Compares patient values against clinical standard reference intervals to highlight potential anomalies.
                                 </p>
                             </div>
                         </div>
@@ -142,16 +139,15 @@
 
                     <div class="mt-4 p-3 bg-light rounded-3 border">
                         <h6 class="fw-bold text-dark mb-1">
-                            <i class="bi bi-shield-check text-success me-1"></i> Zero-Hallucination Medical Guardrails
+                            <i class="bi bi-info-circle text-primary me-1"></i> Clinical Evaluation Note
                         </h6>
                         <p class="text-muted small mb-0">
-                            Unlike generic chat LLMs that can guess medical figures, MedReport AI enforces boundary checking on actual clinical values to guarantee 100% diagnostic precision.
+                            This application is designed as an educational clinical decision support tool to help patients understand complex laboratory reports. Laboratory findings should always be clinically correlated by a certified healthcare professional.
                         </p>
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 pt-0 px-4 pb-4">
                     <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
-                    <a href="/sample-demo" class="btn btn-primary rounded-pill px-4">Test Demo Report</a>
                 </div>
             </div>
         </div>
