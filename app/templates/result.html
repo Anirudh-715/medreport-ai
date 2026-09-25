@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block title %}MedReport AI — Report Results{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <!-- Header Row -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4 animate-fade-in">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-file-earmark-medical-fill text-accent me-2"></i>
+                {{ report.filename }}
+            </h2>
+            <p class="text-muted mb-0">
+                <i class="bi bi-calendar3 me-1"></i>
+                Analyzed on {{ report.upload_time }}
+            </p>
+        </div>
+        <div class="mt-2 mt-md-0">
+            {% if report.severity == 'Critical' %}
+                <span class="badge severity-badge bg-danger fs-6 shadow-sm">
+                    <i class="bi bi-exclamation-octagon-fill me-1"></i> Critical
+                </span>
+            {% elif report.severity == 'Severe' %}
+                <span class="badge severity-badge bg-orange fs-6 shadow-sm">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> Severe
+                </span>
+            {% elif report.severity == 'Moderate' %}
+                <span class="badge severity-badge bg-warning text-dark fs-6 shadow-sm">
+                    <i class="bi bi-exclamation-circle-fill me-1"></i> Moderate
+                </span>
+            {% elif report.severity == 'Mild' %}
+                <span class="badge severity-badge bg-info text-dark fs-6 shadow-sm">
+                    <i class="bi bi-info-circle-fill me-1"></i> Mild
+                </span>
+            {% else %}
+                <span class="badge severity-badge bg-success fs-6 shadow-sm">
+                    <i class="bi bi-check-circle-fill me-1"></i> Normal
+                </span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Summary Card -->
+        <div class="col-12 animate-fade-in" style="animation-delay: 0.05s;">
+            <div class="card result-card summary border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-bold mb-3">
+                        <i class="bi bi-journal-text text-primary me-2"></i>AI-Generated Summary
+                    </h5>
+                    <p class="card-text lh-lg mb-0">{{ report.summary }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Findings Card -->
+        <div class="col-lg-6 animate-fade-in" style="animation-delay: 0.1s;">
+            <div class="card result-card findings border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-bold mb-3">
+                        <i class="bi bi-search text-success me-2"></i>Key Findings
+                    </h5>
+                    {% if report.key_findings %}
+                        <ul class="list-unstyled mb-0">
+                            {% for finding in report.key_findings %}
+                                <li class="d-flex align-items-start mb-3">
+                                    <i class="bi bi-check-circle-fill text-success me-2 mt-1 flex-shrink-0"></i>
+                                    <span>{{ finding }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-clipboard-check display-6 d-block mb-2"></i>
+                            No key findings identified.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendations Card -->
+        <div class="col-lg-6 animate-fade-in" style="animation-delay: 0.15s;">
+            <div class="card result-card recommendations border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-bold mb-3">
+                        <i class="bi bi-lightbulb-fill text-warning me-2"></i>Recommendations
+                    </h5>
+                    {% if report.recommendations %}
+                        <ol class="mb-0">
+                            {% for rec in report.recommendations %}
+                                <li class="mb-2">
+                                    <i class="bi bi-lightbulb text-warning me-1"></i>
+                                    {{ rec }}
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-hand-thumbs-up display-6 d-block mb-2"></i>
+                            No specific recommendations.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Abnormal Values Card -->
+        <div class="col-12 animate-fade-in" style="animation-delay: 0.2s;">
+            <div class="card result-card abnormal border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-bold mb-3">
+                        <i class="bi bi-exclamation-diamond-fill text-danger me-2"></i>Abnormal Values
+                    </h5>
+                    {% if report.abnormal_values %}
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th><i class="bi bi-tag me-1"></i>Parameter</th>
+                                        <th><i class="bi bi-speedometer2 me-1"></i>Value</th>
+                                        <th><i class="bi bi-arrow-left-right me-1"></i>Normal Range</th>
+                                        <th><i class="bi bi-flag me-1"></i>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in report.abnormal_values %}
+                                        <tr>
+                                            <td class="fw-medium">{{ item.parameter }}</td>
+                                            <td>
+                                                <code class="fs-6">{{ item.value }}</code>
+                                            </td>
+                                            <td class="text-muted">{{ item.normal_range }}</td>
+                                            <td>
+                                                {% if item.status == 'Critical' %}
+                                                    <span class="badge bg-danger fw-bold px-3 py-2">
+                                                        <i class="bi bi-exclamation-octagon-fill me-1"></i>{{ item.status }}
+                                                    </span>
+                                                {% elif item.status == 'High' %}
+                                                    <span class="badge bg-danger px-3 py-2">
+                                                        <i class="bi bi-arrow-up-circle-fill me-1"></i>{{ item.status }}
+                                                    </span>
+                                                {% elif item.status == 'Low' %}
+                                                    <span class="badge bg-warning text-dark px-3 py-2">
+                                                        <i class="bi bi-arrow-down-circle-fill me-1"></i>{{ item.status }}
+                                                    </span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary px-3 py-2">{{ item.status }}</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <i class="bi bi-shield-check display-6 d-block mb-2 text-success"></i>
+                            All values within normal range ✅
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Extracted Text (Collapsible) -->
+        <div class="col-12 animate-fade-in" style="animation-delay: 0.25s;">
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <a class="text-decoration-none d-flex align-items-center justify-content-between"
+                           data-bs-toggle="collapse" href="#extractedText" role="button"
+                           aria-expanded="false" aria-controls="extractedText">
+                            <span>
+                                <i class="bi bi-file-text me-2 text-secondary"></i>View Raw Extracted Text
+                            </span>
+                            <i class="bi bi-chevron-down text-muted collapse-chevron"></i>
+                        </a>
+                    </h5>
+                    <div class="collapse mt-3" id="extractedText">
+                        <div class="extracted-text-block bg-light rounded-3 p-4">
+                            <pre class="mb-0"><code>{{ report.extracted_text }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Action Buttons -->
+    <div class="d-flex flex-wrap justify-content-center gap-3 mt-5 animate-fade-in" style="animation-delay: 0.3s;">
+        <a href="/" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
+            📄 Analyze Another Report
+        </a>
+        <a href="/history" class="btn btn-outline-secondary btn-lg rounded-pill px-4">
+            📋 View History
+        </a>
+    </div>
+
+</div>
+{% endblock %}
