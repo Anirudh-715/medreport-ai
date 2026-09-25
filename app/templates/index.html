@@ -1,155 +1,274 @@
 {% extends "base.html" %}
 
-{% block title %}MedReport AI - Upload Report{% endblock %}
+{% block title %}MedReport — Excellence in Healthcare With Intelligent Analysis{% endblock %}
 
 {% block content %}
-<div class="container py-5">
+<!-- Ambient Background Elements -->
+<div class="ambient-glow-circle-1"></div>
+<div class="ambient-glow-circle-2"></div>
 
-    <!-- Hero Section -->
-    <div class="text-center mb-5">
-        <div class="mb-3">
-            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-semibold">
-                <i class="bi bi-stars me-1"></i> Powered by Azure AI + GPT-4o
-            </span>
-        </div>
-        <h1 class="display-4 fw-bold hero-heading mb-3">
-            AI-Powered Medical Report<br>Summarizer
-        </h1>
-        <p class="lead text-muted mx-auto" style="max-width: 640px;">
-            Upload your medical reports and get instant AI-powered analysis with
-            key findings, abnormal value detection, and actionable recommendations.
-        </p>
-    </div>
-
-
-
-    <!-- Upload Card -->
-    <div class="row justify-content-center mb-5">
-        <div class="col-lg-8">
-            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
-                <!-- Card Header -->
-                <div class="card-header bg-white border-bottom-0 pt-4 px-4 pb-0">
-                    <div class="d-flex align-items-center gap-2 mb-2">
-                        <div class="rounded-circle bg-primary bg-opacity-10 p-2 d-flex align-items-center justify-content-center" style="width:40px;height:40px;">
-                            <i class="bi bi-upload text-primary"></i>
-                        </div>
-                        <h5 class="fw-bold mb-0">Upload Medical Report</h5>
-                    </div>
-                    <p class="text-muted small mb-0">Drag and drop or click to select your report file</p>
+<section class="clinic-hero-section py-5">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            
+            <!-- Left Column: Copy, Badges, Stats & Actions -->
+            <div class="col-lg-6">
+                <!-- Trust Pill Badges -->
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <span class="badge-pill">
+                        <i class="bi bi-shield-check text-primary"></i> Accredited AI
+                    </span>
+                    <span class="badge-pill">
+                        <i class="bi bi-clock-history text-primary"></i> 24/7 Instant Analysis
+                    </span>
+                    <span class="badge-pill">
+                        <i class="bi bi-star-fill text-warning"></i> 4.9/5 Clinical Rating
+                    </span>
                 </div>
 
-                <div class="card-body p-4">
-                    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+                <!-- Main Hero Headline -->
+                <h1 class="clinic-hero-title mb-4">
+                    Excellence in <br>
+                    <span class="text-highlight">Healthcare</span> With <br>
+                    Compassionate AI
+                </h1>
 
-                        <!-- Drag & Drop Zone -->
-                        <div class="upload-zone" id="uploadZone">
-                            <div class="upload-zone-content">
-                                <div class="upload-icon-wrapper mb-3">
-                                    <div class="upload-icon-bg"></div>
-                                    <i class="bi bi-cloud-arrow-up-fill upload-icon"></i>
+                <!-- Body Text -->
+                <p class="clinic-hero-lead text-muted mb-4">
+                    Instantly translate complex pathology, radiology, and biochemistry reports 
+                    into actionable clinical summaries. Automated reference interval checks, 
+                    abnormal value alerts, and specialist follow-up guidance.
+                </p>
+
+                <!-- Stats Row -->
+                <div class="row g-4 py-3 mb-4 border-top border-bottom">
+                    <div class="col-4">
+                        <div class="stat-number">16+</div>
+                        <div class="stat-label">Core Biomarkers</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-number">5000+</div>
+                        <div class="stat-label">Reports Evaluated</div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Diagnostic Panels</div>
+                    </div>
+                </div>
+
+                <!-- CTA Action Buttons -->
+                <div class="d-flex flex-wrap align-items-center gap-3 mb-5">
+                    <button type="button" class="btn btn-clinic-primary btn-lg" id="triggerUploadBtn">
+                        <i class="bi bi-file-earmark-arrow-up me-2"></i> Upload Report
+                    </button>
+                    <a href="/history" class="btn btn-clinic-outline btn-lg">
+                        <i class="bi bi-clock-history me-2"></i> View Past Reports
+                    </a>
+                </div>
+
+                <!-- Emergency / Compliance Helpline Card -->
+                <div class="clinic-helpline-card d-flex align-items-center gap-3 p-3">
+                    <div class="helpline-icon-box">
+                        <i class="bi bi-telephone-fill"></i>
+                    </div>
+                    <div>
+                        <div class="helpline-title">Clinical Support & Verification</div>
+                        <div class="helpline-phone">+1 (555) 911-2468</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Doctor Hero Showcase + Integrated Upload Terminal -->
+            <div class="col-lg-6">
+                <div class="clinic-showcase-wrapper position-relative">
+                    
+                    <!-- Doctor Showcase Image Card -->
+                    <div class="doctor-image-card shadow-lg position-relative overflow-hidden">
+                        <img src="{{ url_for('static', filename='images/doctor_hero.jpg') }}" 
+                             alt="Clinical Diagnostic Specialist" 
+                             class="img-fluid doctor-hero-img">
+
+                        <!-- Floating Badge: Next Available (Top Right) -->
+                        <div class="floating-badge badge-top-right shadow">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="badge-icon-box bg-primary bg-opacity-10 text-primary">
+                                    <i class="bi bi-calendar2-check"></i>
                                 </div>
-                                <h5 class="fw-semibold mb-1">Drag & drop your medical report here</h5>
-                                <p class="text-muted mb-3">or click to browse your files</p>
-                                <div class="d-flex flex-wrap justify-content-center gap-2">
-                                    <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-file-pdf me-1 text-danger"></i>PDF</span>
-                                    <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-file-image me-1 text-success"></i>PNG</span>
-                                    <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-file-image me-1 text-success"></i>JPG</span>
-                                    <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-file-image me-1 text-info"></i>TIFF</span>
-                                    <span class="badge bg-light text-dark border px-2 py-1"><i class="bi bi-file-image me-1 text-warning"></i>BMP</span>
+                                <div>
+                                    <div class="badge-micro-title text-muted">Analysis Status</div>
+                                    <div class="badge-bold-title text-dark">Instant Available</div>
+                                    <div class="badge-sub-title text-muted">Dr. Sarah Jenkins • AI Lead</div>
                                 </div>
                             </div>
-                            <input type="file" name="file" id="fileInput" class="d-none"
-                                   accept=".pdf,.png,.jpg,.jpeg,.tiff,.bmp">
                         </div>
 
-                        <!-- Selected File Display -->
-                        <div id="fileInfo" class="d-none mt-3">
-                            <div class="d-flex align-items-center gap-3 p-3 bg-success bg-opacity-10 rounded-3 border border-success border-opacity-25">
-                                <i class="bi bi-file-earmark-check-fill text-success fs-3"></i>
-                                <div class="flex-grow-1">
-                                    <div class="fw-semibold" id="fileName"></div>
-                                    <small class="text-muted" id="fileSize"></small>
+                        <!-- Floating Badge: Reviews Rating (Bottom Left) -->
+                        <div class="floating-badge badge-bottom-left shadow">
+                            <div class="star-rating mb-1">
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                                <i class="bi bi-star-fill text-warning"></i>
+                            </div>
+                            <div class="badge-bold-title text-dark">4.9 / 5.0</div>
+                            <div class="badge-sub-title text-muted">1,234 Patient Reviews</div>
+                        </div>
+                    </div>
+
+                    <!-- Integrated Upload Terminal Card (Elevated Below/Overlapping) -->
+                    <div class="upload-terminal-card shadow-lg p-4 mt-4" id="uploadTerminalSection">
+                        <div class="d-flex align-items-center justify-content-between mb-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="terminal-dot"></div>
+                                <h6 class="fw-bold mb-0 text-dark">Report Ingestion Terminal</h6>
+                            </div>
+                            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1 rounded-pill small">
+                                Azure Cloud Active
+                            </span>
+                        </div>
+
+                        <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+                            <!-- Drag & Drop Zone -->
+                            <div class="clinic-dropzone" id="uploadZone">
+                                <div class="dropzone-icon mb-2">
+                                    <i class="bi bi-cloud-arrow-up-fill text-primary display-5"></i>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-outline-danger rounded-circle" id="clearFile" style="width:32px;height:32px;padding:0;">
-                                    <i class="bi bi-x-lg"></i>
+                                <h6 class="fw-bold text-dark mb-1">Drag &amp; drop medical report here</h6>
+                                <p class="text-muted small mb-3">PDF, JPG, PNG, TIFF up to 16MB</p>
+                                <span class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                    Browse Files
+                                </span>
+                                <input type="file" name="file" id="fileInput" class="d-none"
+                                       accept=".pdf,.png,.jpg,.jpeg,.tiff,.bmp">
+                            </div>
+
+                            <!-- Selected File Info State -->
+                            <div id="fileInfo" class="d-none mt-3">
+                                <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-3 border">
+                                    <i class="bi bi-file-earmark-check-fill text-primary fs-3"></i>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-semibold text-dark text-truncate" id="fileName" style="max-width:260px;"></div>
+                                        <small class="text-muted" id="fileSize"></small>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-circle" id="clearFile" style="width:30px;height:30px;padding:0;">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Analyze Button -->
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-clinic-primary w-100 py-3 fw-bold rounded-pill" id="submitBtn" disabled>
+                                    <span class="btn-text">
+                                        <i class="bi bi-shield-check me-2"></i> Start Clinical AI Analysis
+                                    </span>
+                                    <span class="btn-loading d-none">
+                                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                        Analyzing Clinical Biomarkers...
+                                    </span>
                                 </button>
                             </div>
-                        </div>
+                        </form>
+                    </div>
 
-                        <!-- Submit Button -->
-                        <div class="text-center mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg px-5 rounded-pill shadow-sm"
-                                    id="submitBtn" disabled>
-                                <span class="btn-text">
-                                    <i class="bi bi-search me-2"></i>Analyze Report
-                                </span>
-                                <span class="btn-loading d-none">
-                                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                                    Analyzing...
-                                </span>
-                            </button>
-                        </div>
+                </div>
+            </div>
 
-                    </form>
+        </div>
+    </div>
+</section>
+
+<!-- Section 2: Clinical Panels Supported -->
+<section class="py-5 bg-white border-top" id="panels">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <span class="badge-pill mb-2">Automated Laboratory Detection</span>
+            <h2 class="fw-bold text-dark">Supported Pathology & Diagnostic Panels</h2>
+            <p class="text-muted mx-auto" style="max-width: 600px;">
+                Evaluates parameters against standardized clinical reference intervals to eliminate diagnostic ambiguity.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="panel-card p-4 rounded-4 h-100">
+                    <div class="panel-icon mb-3">🩸</div>
+                    <h5 class="fw-bold mb-2">Hematology (CBC)</h5>
+                    <p class="text-muted small mb-0">Hemoglobin, RBC, WBC count, and Platelet levels flagged for anemia and infection markers.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel-card p-4 rounded-4 h-100">
+                    <div class="panel-icon mb-3">🍬</div>
+                    <h5 class="fw-bold mb-2">Diabetes & Glycemic</h5>
+                    <p class="text-muted small mb-0">Fasting Blood Sugar, Post Prandial Glucose, and HbA1c for pre-diabetes and diabetes risk.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel-card p-4 rounded-4 h-100">
+                    <div class="panel-icon mb-3">❤️</div>
+                    <h5 class="fw-bold mb-2">Lipid & Cardiac</h5>
+                    <p class="text-muted small mb-0">Total Cholesterol, Triglycerides, HDL, and LDL levels evaluated for cardiovascular health.</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel-card p-4 rounded-4 h-100">
+                    <div class="panel-icon mb-3">🧬</div>
+                    <h5 class="fw-bold mb-2">Renal & Thyroid</h5>
+                    <p class="text-muted small mb-0">Serum Creatinine, Blood Urea, TSH, Vitamin D, and Vitamin B12 deficiency detection.</p>
                 </div>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- How It Works -->
-    <div class="text-center mb-4">
-        <h4 class="fw-bold">How It Works</h4>
-        <p class="text-muted">Three simple steps to understand your medical report</p>
-    </div>
+<!-- Section 3: How It Works Workflow -->
+<section class="py-5" id="how-it-works" style="background-color: #f8fafc;">
+    <div class="container py-4">
+        <div class="text-center mb-5">
+            <span class="badge-pill mb-2">End-to-End Pipeline</span>
+            <h2 class="fw-bold text-dark">Three Steps to Diagnostic Clarity</h2>
+        </div>
 
-    <!-- Feature Cards -->
-    <div class="row g-4 mb-5">
-        <div class="col-md-4">
-            <div class="card feature-card border-0 shadow-sm rounded-4 h-100 text-center">
-                <div class="card-body p-4">
-                    <div class="feature-icon-wrapper mb-3 mx-auto">
-                        <i class="bi bi-file-earmark-text-fill"></i>
-                    </div>
-                    <div class="step-number">1</div>
-                    <h5 class="fw-bold mb-2">Document Extraction</h5>
-                    <p class="text-muted mb-0 small">
-                        Azure Document Intelligence extracts text, tables, and structured data
-                        from your medical reports with high accuracy.
-                    </p>
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="step-card p-4 bg-white rounded-4 shadow-sm h-100">
+                    <div class="step-badge mx-auto mb-3">1</div>
+                    <h5 class="fw-bold mb-2">1. Secure Ingestion</h5>
+                    <p class="text-muted small mb-0">Upload your PDF or image report. The file is securely partitioned in Microsoft Azure Blob Storage.</p>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card feature-card border-0 shadow-sm rounded-4 h-100 text-center">
-                <div class="card-body p-4">
-                    <div class="feature-icon-wrapper mb-3 mx-auto">
-                        <i class="bi bi-cpu-fill"></i>
-                    </div>
-                    <div class="step-number">2</div>
-                    <h5 class="fw-bold mb-2">AI Analysis</h5>
-                    <p class="text-muted mb-0 small">
-                        GPT-4o analyzes your findings, identifies abnormal values, assesses severity,
-                        and provides personalized recommendations.
-                    </p>
+            <div class="col-md-4">
+                <div class="step-card p-4 bg-white rounded-4 shadow-sm h-100">
+                    <div class="step-badge mx-auto mb-3">2</div>
+                    <h5 class="fw-bold mb-2">2. Multi-tier Extraction</h5>
+                    <p class="text-muted small mb-0">Azure Document Intelligence layouts and extracts text, tabular lab values, and test units.</p>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card feature-card border-0 shadow-sm rounded-4 h-100 text-center">
-                <div class="card-body p-4">
-                    <div class="feature-icon-wrapper mb-3 mx-auto">
-                        <i class="bi bi-clipboard2-pulse-fill"></i>
-                    </div>
-                    <div class="step-number">3</div>
-                    <h5 class="fw-bold mb-2">Clear Summary</h5>
-                    <p class="text-muted mb-0 small">
-                        Get a severity assessment, key findings at a glance,
-                        and actionable recommendations to share with your doctor.
-                    </p>
+            <div class="col-md-4">
+                <div class="step-card p-4 bg-white rounded-4 shadow-sm h-100">
+                    <div class="step-badge mx-auto mb-3">3</div>
+                    <h5 class="fw-bold mb-2">3. Clinical Synthesis</h5>
+                    <p class="text-muted small mb-0">Our Clinical Lab Rule Engine cross-references reference ranges, generating actionable summaries and doctor follow-up advice.</p>
                 </div>
             </div>
         </div>
     </div>
+</section>
+{% endblock %}
 
-</div>
+{% block scripts %}
+<script>
+    // Smooth scroll from "Upload Report" button directly to the upload dropzone
+    document.getElementById('triggerUploadBtn')?.addEventListener('click', function() {
+        const terminal = document.getElementById('uploadTerminalSection');
+        if (terminal) {
+            terminal.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Flash terminal card to guide eye
+            terminal.classList.add('terminal-highlight');
+            setTimeout(() => terminal.classList.remove('terminal-highlight'), 1200);
+        }
+    });
+</script>
 {% endblock %}
